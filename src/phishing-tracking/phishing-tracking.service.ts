@@ -7,7 +7,10 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class PhishingTrackingService {
-  constructor(@InjectModel(PhishingTracking.name) private trackingModel: Model<PhishingTracking>) {}
+  constructor(
+    @InjectModel(PhishingTracking.name)
+    private trackingModel: Model<PhishingTracking>,
+  ) {}
 
   async recordClick(emailAddress: string, context?: string): Promise<void> {
     await this.trackingModel.create({
@@ -17,9 +20,7 @@ export class PhishingTrackingService {
     });
   }
 
-  // async recordClick(userId: string): Promise<void> {
-  //   await this.prisma.user.update({
-  //     where: { id: userId },
-  //     data: { clickedPhishingLink: true, clickedAt: new Date() },
-  //   });
+  async getAllTracking(): Promise<PhishingTracking[]> {
+    return this.trackingModel.find().exec();
   }
+}
